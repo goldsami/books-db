@@ -10,7 +10,7 @@ describe('UsersService', () => {
   let service: UsersService;
 
   const dbMock = {
-    insert: jest.fn(),
+    save: jest.fn(),
     find: jest.fn(),
     findOne: jest.fn(),
     delete: jest.fn(),
@@ -40,7 +40,7 @@ describe('UsersService', () => {
       const user = { firstName: 'User1' } as CreateUserDto;
 
       jest
-        .spyOn(dbMock, 'insert')
+        .spyOn(dbMock, 'save')
         .mockImplementation(() => Promise.resolve(user));
 
       expect(await service.create(user)).toBe(user);
