@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AuthorsModule } from '../src/authors/authors.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { AuthorsModule } from '../src/authors/authors.module';
 import { AuthorEntity } from '../src/authors/entities/author.entity';
 
 describe('Authors', () => {

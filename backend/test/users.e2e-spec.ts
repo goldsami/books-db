@@ -1,9 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { UsersModule } from '../src/users/users.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from '../src/users/entities/user.entity';
+import { UsersModule } from '../src/users/users.module';
 
 describe('Users', () => {
   let app: INestApplication;

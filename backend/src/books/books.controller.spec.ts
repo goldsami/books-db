@@ -4,7 +4,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { BookEntity } from './entities/book.entity';
 import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
-import { BookCreateDTO } from './dto/book.dto';
+import { BookCreateDTO, BookDto } from './dto/book.dto';
 
 describe('BooksController', () => {
   let controller: BooksController;
@@ -32,11 +32,11 @@ describe('BooksController', () => {
 
   describe('create book', () => {
     it('should create and return book', async () => {
-      const book = { name: 'Book1' } as BookEntity;
+      const book = { name: 'Book1' } as BookCreateDTO;
 
       jest
         .spyOn(service, 'create')
-        .mockImplementation(() => Promise.resolve(book));
+        .mockImplementation(() => Promise.resolve(book as BookDto));
 
       expect(await controller.create(book as BookCreateDTO)).toBe(book);
     });
@@ -44,7 +44,7 @@ describe('BooksController', () => {
 
   describe('findAll', () => {
     it('should return all books', async () => {
-      const result = [{ name: 'Book1' } as BookEntity];
+      const result = [{ name: 'Book1' } as BookDto];
 
       jest
         .spyOn(service, 'findAll')
@@ -56,7 +56,7 @@ describe('BooksController', () => {
 
   describe('findOne', () => {
     it('should return a book', async () => {
-      const result = { name: 'Book1' } as BookEntity;
+      const result = { name: 'Book1' } as BookDto;
 
       jest
         .spyOn(service, 'findOne')

@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
+import { AuthorsModule } from './authors/authors.module';
+import { AuthorEntity } from './authors/entities/author.entity';
+import { BooksModule } from './books/books.module';
+import { BookEntity } from './books/entities/book.entity';
 import { UserEntity } from './users/entities/user.entity';
-import { AuthorEntity } from '@authors/entities/author.entity';
-import { AuthorsModule } from '@authors/authors.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     UsersModule,
+    BooksModule,
+    AuthorsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -15,10 +19,9 @@ import { AuthorsModule } from '@authors/authors.module';
       username: 'root',
       password: 'admin',
       database: 'books-db',
-      entities: [UserEntity, AuthorEntity],
+      entities: [UserEntity, AuthorEntity, BookEntity],
       synchronize: true,
     }),
-    AuthorsModule,
   ],
   controllers: [],
   providers: [],

@@ -1,7 +1,9 @@
+import { AuthorEntity } from '../../authors/entities/author.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,4 +20,7 @@ export class BookEntity {
 
   @CreateDateColumn()
   updatedOn?: Date;
+
+  @ManyToOne((type) => AuthorEntity, (author) => author.books)
+  author?: AuthorEntity;
 }

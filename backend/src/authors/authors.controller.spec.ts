@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { AuthorEntity } from './entities/author.entity';
 import { AuthorsController } from './authors.controller';
 import { AuthorsService } from './authors.service';
-import { AuthorCreateDTO } from './dto/author.dto';
+import { AuthorCreateDTO, AuthorDto } from './dto/author.dto';
+import { AuthorEntity } from './entities/author.entity';
 
 describe('AuthorsController', () => {
   let controller: AuthorsController;
@@ -32,11 +32,11 @@ describe('AuthorsController', () => {
 
   describe('create author', () => {
     it('should create and return author', async () => {
-      const author = { name: 'Author1' } as AuthorEntity;
+      const author = { name: 'Author1' } as AuthorCreateDTO;
 
       jest
         .spyOn(service, 'create')
-        .mockImplementation(() => Promise.resolve(author));
+        .mockImplementation(() => Promise.resolve(author as AuthorDto));
 
       expect(await controller.create(author as AuthorCreateDTO)).toBe(author);
     });
@@ -44,7 +44,7 @@ describe('AuthorsController', () => {
 
   describe('findAll', () => {
     it('should return all authors', async () => {
-      const result = [{ name: 'Author1' } as AuthorEntity];
+      const result = [{ name: 'Author1' } as AuthorDto];
 
       jest
         .spyOn(service, 'findAll')
@@ -56,7 +56,7 @@ describe('AuthorsController', () => {
 
   describe('findOne', () => {
     it('should return a author', async () => {
-      const result = { name: 'Author1' } as AuthorEntity;
+      const result = { name: 'Author1' } as AuthorDto;
 
       jest
         .spyOn(service, 'findOne')

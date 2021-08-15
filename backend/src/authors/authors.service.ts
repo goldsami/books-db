@@ -13,7 +13,10 @@ export class AuthorsService {
   ) {}
 
   async findOne(id: string): Promise<AuthorDto> {
-    const author = await this.authorsRepository.findOne(id);
+    const author = await this.authorsRepository.findOne({
+      where: { id },
+      relations: ['books'],
+    });
     if (!author) {
       throw new HttpException("Author doesn't exist", HttpStatus.BAD_REQUEST);
     }

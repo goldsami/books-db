@@ -1,4 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
+import { AuthorDto } from 'src/authors/dto/author.dto';
 
 export class BookDto {
   @IsNotEmpty()
@@ -6,6 +7,8 @@ export class BookDto {
 
   @IsNotEmpty()
   name: string;
+
+  author?: AuthorDto;
 }
 
 export class BookCreateDTO {
