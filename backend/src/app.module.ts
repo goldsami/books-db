@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/schemas/user.schema';
 import { UsersModule } from './users/users.module';
+import { UserEntity } from './users/entities/user.entity';
+import { AuthorEntity } from '@authors/entities/author.entity';
+import { AuthorsModule } from '@authors/authors.module';
 
 @Module({
   imports: [
@@ -13,9 +15,10 @@ import { UsersModule } from './users/users.module';
       username: 'root',
       password: 'admin',
       database: 'books-db',
-      entities: [User],
+      entities: [UserEntity, AuthorEntity],
       synchronize: true,
     }),
+    AuthorsModule,
   ],
   controllers: [],
   providers: [],

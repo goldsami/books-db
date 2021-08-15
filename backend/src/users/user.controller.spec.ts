@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schemas/user.schema';
+import { UserEntity } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { UserCreateDTO } from './dto/user.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -17,7 +16,7 @@ describe('UsersController', () => {
       providers: [
         UsersService,
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
           useValue: {},
         },
       ],
@@ -33,19 +32,19 @@ describe('UsersController', () => {
 
   describe('create user', () => {
     it('should create and return user', async () => {
-      const user = { firstName: 'User1' } as User;
+      const user = { name: 'User1' } as UserEntity;
 
       jest
         .spyOn(service, 'create')
         .mockImplementation(() => Promise.resolve(user));
 
-      expect(await controller.create(user as CreateUserDto)).toBe(user);
+      expect(await controller.create(user as UserCreateDTO)).toBe(user);
     });
   });
 
   describe('findAll', () => {
     it('should return all users', async () => {
-      const result = [{ firstName: 'User1' } as User];
+      const result = [{ name: 'User1' } as UserEntity];
 
       jest
         .spyOn(service, 'findAll')
@@ -57,7 +56,7 @@ describe('UsersController', () => {
 
   describe('findOne', () => {
     it('should return a user', async () => {
-      const result = { firstName: 'User1' } as User;
+      const result = { name: 'User1' } as UserEntity;
 
       jest
         .spyOn(service, 'findOne')
@@ -90,8 +89,8 @@ describe('UsersController', () => {
 
       expect(
         await controller.update('0', {
-          firstName: 'new firstName',
-        } as UpdateUserDto),
+          name: 'new name',
+        } as UserCreateDTO),
       ).toBe(result);
     });
   });

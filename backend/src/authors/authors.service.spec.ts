@@ -2,12 +2,12 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { UsersService } from './users.service';
-import { UserCreateDTO, UserDto } from './dto/user.dto';
-import { UserEntity } from './entities/user.entity';
+import { AuthorsService } from './authors.service';
+import { AuthorCreateDTO, AuthorDto } from './dto/author.dto';
+import { AuthorEntity } from './entities/author.entity';
 
-describe('UsersService', () => {
-  let service: UsersService;
+describe('AuthorsService', () => {
+  let service: AuthorsService;
 
   const dbMock = {
     save: jest.fn(),
@@ -22,39 +22,39 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UsersService,
+        AuthorsService,
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(AuthorEntity),
           useValue: dbMock,
         },
       ],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    service = module.get<AuthorsService>(AuthorsService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe('create user', () => {
-    it('should create and return user', async () => {
-      const user = { name: 'User1' } as UserCreateDTO;
+  describe('create author', () => {
+    it('should create and return author', async () => {
+      const author = { name: 'Author1' } as AuthorCreateDTO;
       const result = {
-        name: 'User1',
+        name: 'Author1',
         id: '0',
         dateOfBirth,
-      } as UserDto;
+      } as AuthorDto;
 
       jest.spyOn(dbMock, 'save').mockImplementation(() => result);
 
-      expect(await service.create(user)).toEqual(result);
+      expect(await service.create(author)).toEqual(result);
     });
   });
 
   describe('findAll', () => {
-    it('should return all users', async () => {
-      const result = [{ id: '0', name: 'User1', dateOfBirth } as UserDto];
+    it('should return all authors', async () => {
+      const result = [{ id: '0', name: 'Author1', dateOfBirth } as AuthorDto];
 
       jest.spyOn(dbMock, 'find').mockImplementation(() => result);
 
@@ -63,8 +63,8 @@ describe('UsersService', () => {
   });
 
   describe('findOne', () => {
-    it('should return a user', async () => {
-      const result = { id: '0', name: 'User1', dateOfBirth } as UserDto;
+    it('should return a author', async () => {
+      const result = { id: '0', name: 'Author1', dateOfBirth } as AuthorDto;
 
       jest
         .spyOn(dbMock, 'findOne')
@@ -73,16 +73,16 @@ describe('UsersService', () => {
       expect(await service.findOne('0')).toEqual(result);
     });
 
-    it('should should throw if user not found', async () => {
+    it('should should throw if author not found', async () => {
       jest.spyOn(dbMock, 'findOne').mockImplementation(() => null);
       expect(() => service.findOne('0')).rejects.toThrowError(
-        new HttpException("User doesn't exist", HttpStatus.BAD_REQUEST),
+        new HttpException("Author doesn't exist", HttpStatus.BAD_REQUEST),
       );
     });
   });
 
   describe('remove', () => {
-    it('should delete a user', async () => {
+    it('should delete a author', async () => {
       const id = '0';
       const result = {} as DeleteResult;
 
@@ -93,13 +93,13 @@ describe('UsersService', () => {
   });
 
   describe('update', () => {
-    it('should update user', async () => {
-      const user = { name: 'new name' } as UserCreateDTO;
+    it('should update author', async () => {
+      const author = { name: 'new name' } as AuthorCreateDTO;
       const result = {} as UpdateResult;
 
       jest.spyOn(dbMock, 'update').mockImplementation(() => result);
 
-      expect(await service.update('0', user)).toEqual(result);
+      expect(await service.update('0', author)).toEqual(result);
     });
   });
 });

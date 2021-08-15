@@ -5,16 +5,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('user')
-export class UserEntity {
+@Entity('book')
+export class BookEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', nullable: false })
   name: string;
-
-  @Column({ type: 'date', nullable: true })
-  dateOfBirth?: Date;
 
   @CreateDateColumn()
   createdOn?: Date;

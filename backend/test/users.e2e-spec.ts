@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { UsersModule } from '../src/users/users.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../src/users/schemas/user.schema';
+import { UserEntity } from '../src/users/entities/user.entity';
 
 describe('Users', () => {
   let app: INestApplication;
@@ -16,13 +16,13 @@ describe('Users', () => {
     update: jest.fn(),
   };
 
-  const user = { firstName: 'name' };
+  const user = { id: '0', name: 'name', dateOfBirth: null };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [UsersModule],
     })
-      .overrideProvider(getRepositoryToken(User))
+      .overrideProvider(getRepositoryToken(UserEntity))
       .useValue(dbMock)
       .compile();
 
@@ -33,23 +33,18 @@ describe('Users', () => {
   it(`/GET users`, () => {
     const users = [user];
 
-    jest
-      .spyOn(dbMock, 'find')
-      .mockImplementation(() => Promise.resolve({ users }));
-    return request(app.getHttpServer())
-      .get('/users')
-      .expect(200)
-      .expect({ users });
+    jest.spyOn(dbMock, 'find').mockImplementation(() => Promise.resolve(users));
+    return request(app.getHttpServer()).get('/users').expect(200);
   });
 
   it(`/GET user`, () => {
     jest
       .spyOn(dbMock, 'findOne')
-      .mockImplementation(() => Promise.resolve({ user }));
+      .mockImplementation(() => Promise.resolve(user));
     return request(app.getHttpServer())
       .get('/users/1')
       .expect(200)
-      .expect({ user });
+      .expect(user);
   });
 
   it(`/DELETE user`, () => {
@@ -61,11 +56,11 @@ describe('Users', () => {
     return request(app.getHttpServer()).post('/users').expect(201);
   });
 
-  it(`/PATCH user`, () => {
+  it(`/PUT user`, () => {
     jest
       .spyOn(dbMock, 'update')
       .mockImplementation(() => Promise.resolve(user));
-    return request(app.getHttpServer()).patch('/users/1').expect(200);
+    return request(app.getHttpServer()).put('/users/0').expect(200);
   });
 
   afterAll(async () => {

@@ -1,30 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schemas/user.schema';
+import { UserCreateDTO, UserDto } from './dto/user.dto';
+import { UserEntity } from './entities/user.entity';
+import { toUserDto } from './mappers/user.mapper';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    return this.usersRepository.save(createUserDto);
+  async findOne(id: string): Promise<UserDto> {
+    const user = await this.usersRepository.findOne(id);
+    if (!user) {
+      throw new HttpException("User doesn't exist", HttpStatus.BAD_REQUEST);
+    }
+
+    return toUserDto(user);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll(): Promise<UserDto[]> {
+    const users = await this.usersRepository.find();
+    return users.map(toUserDto);
   }
 
-  async findOne(id: string): Promise<User> {
-    return this.usersRepository.findOne(id);
+  async create(createUserDto: UserCreateDTO): Promise<UserDto> {
+    const user = await this.usersRepository.save(createUserDto);
+    return toUserDto(user);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UserCreateDTO) {
     return this.usersRepository.update(id, updateUserDto);
   }
 
