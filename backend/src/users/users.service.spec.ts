@@ -75,7 +75,7 @@ describe('UsersService', () => {
 
     it('should should throw if user not found', async () => {
       jest.spyOn(dbMock, 'findOne').mockImplementation(() => null);
-      expect(() => service.findOne('0')).rejects.toThrowError(
+      expect(() => service.findOne('0')).rejects.toEqual(
         new HttpException("User doesn't exist", HttpStatus.BAD_REQUEST),
       );
     });

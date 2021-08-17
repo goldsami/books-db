@@ -12,5 +12,8 @@ export class BookDto {
 }
 
 export class BookCreateDTO {
+  @IsNotEmpty()
   name: string;
+
+  authorId: string;
 }

@@ -25,7 +25,7 @@ export class AuthorsService {
   }
 
   async findAll(): Promise<AuthorDto[]> {
-    const authors = await this.authorsRepository.find();
+    const authors = await this.authorsRepository.find({ relations: ['books'] });
     return authors.map(toAuthorDto);
   }
 

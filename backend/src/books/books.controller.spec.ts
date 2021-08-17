@@ -5,6 +5,8 @@ import { BookEntity } from './entities/book.entity';
 import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
 import { BookCreateDTO, BookDto } from './dto/book.dto';
+import { AuthorsService } from '../authors/authors.service';
+import { AuthorEntity } from '../authors/entities/author.entity';
 
 describe('BooksController', () => {
   let controller: BooksController;
@@ -15,8 +17,13 @@ describe('BooksController', () => {
       controllers: [BooksController],
       providers: [
         BooksService,
+        AuthorsService,
         {
           provide: getRepositoryToken(BookEntity),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(AuthorEntity),
           useValue: {},
         },
       ],
@@ -32,19 +39,21 @@ describe('BooksController', () => {
 
   describe('create book', () => {
     it('should create and return book', async () => {
-      const book = { name: 'Book1' } as BookCreateDTO;
+      const book = { id: '0', name: 'Book1' } as BookDto;
 
       jest
         .spyOn(service, 'create')
-        .mockImplementation(() => Promise.resolve(book as BookDto));
+        .mockImplementation(() => Promise.resolve(book));
 
-      expect(await controller.create(book as BookCreateDTO)).toBe(book);
+      expect(await controller.create({ name: 'Book1' } as BookCreateDTO)).toBe(
+        book,
+      );
     });
   });
 
   describe('findAll', () => {
     it('should return all books', async () => {
-      const result = [{ name: 'Book1' } as BookDto];
+      const result = [{ id: '0', name: 'Book1' } as BookDto];
 
       jest
         .spyOn(service, 'findAll')
@@ -56,7 +65,7 @@ describe('BooksController', () => {
 
   describe('findOne', () => {
     it('should return a book', async () => {
-      const result = { name: 'Book1' } as BookDto;
+      const result = { id: '0', name: 'Book1' } as BookDto;
 
       jest
         .spyOn(service, 'findOne')

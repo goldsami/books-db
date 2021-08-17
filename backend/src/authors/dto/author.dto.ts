@@ -13,6 +13,8 @@ export class AuthorDto {
 }
 
 export class AuthorCreateDTO {
+  @IsNotEmpty()
   name: string;
+
   dateOfBirth?: Date;
 }

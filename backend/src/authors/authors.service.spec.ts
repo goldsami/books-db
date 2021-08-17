@@ -44,6 +44,7 @@ describe('AuthorsService', () => {
         name: 'Author1',
         id: '0',
         dateOfBirth,
+        books: [],
       } as AuthorDto;
 
       jest.spyOn(dbMock, 'save').mockImplementation(() => result);
@@ -54,7 +55,9 @@ describe('AuthorsService', () => {
 
   describe('findAll', () => {
     it('should return all authors', async () => {
-      const result = [{ id: '0', name: 'Author1', dateOfBirth } as AuthorDto];
+      const result = [
+        { id: '0', name: 'Author1', dateOfBirth, books: [] } as AuthorDto,
+      ];
 
       jest.spyOn(dbMock, 'find').mockImplementation(() => result);
 
@@ -64,7 +67,12 @@ describe('AuthorsService', () => {
 
   describe('findOne', () => {
     it('should return a author', async () => {
-      const result = { id: '0', name: 'Author1', dateOfBirth } as AuthorDto;
+      const result = {
+        id: '0',
+        name: 'Author1',
+        dateOfBirth,
+        books: [],
+      } as AuthorDto;
 
       jest
         .spyOn(dbMock, 'findOne')
@@ -75,7 +83,7 @@ describe('AuthorsService', () => {
 
     it('should should throw if author not found', async () => {
       jest.spyOn(dbMock, 'findOne').mockImplementation(() => null);
-      expect(() => service.findOne('0')).rejects.toThrowError(
+      expect(() => service.findOne('0')).rejects.toEqual(
         new HttpException("Author doesn't exist", HttpStatus.BAD_REQUEST),
       );
     });

@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthorsService } from '../authors/authors.service';
 import { Repository } from 'typeorm';
 import { BookCreateDTO, BookDto } from './dto/book.dto';
 import { BookEntity } from './entities/book.entity';
@@ -10,6 +11,7 @@ export class BooksService {
   constructor(
     @InjectRepository(BookEntity)
     private booksRepository: Repository<BookEntity>,
+    private authorsService: AuthorsService,
   ) {}
 
   async findOne(id: string): Promise<BookDto> {
@@ -22,12 +24,17 @@ export class BooksService {
   }
 
   async findAll(): Promise<BookDto[]> {
-    const books = await this.booksRepository.find();
+    const books = await this.booksRepository.find({ relations: ['author'] });
     return books.map(toBookDto);
   }
 
   async create(createBookDto: BookCreateDTO): Promise<BookDto> {
-    const book = await this.booksRepository.save(createBookDto);
+    const author = await this.authorsService.findOne(createBookDto.authorId);
+    const book = await this.booksRepository.save({
+      ...createBookDto,
+      author,
+    });
+    // await this.booksRepository.save(book);
     return toBookDto(book);
   }
 

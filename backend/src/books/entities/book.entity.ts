@@ -9,7 +9,7 @@ import {
 
 @Entity('book')
 export class BookEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ type: 'varchar', nullable: false })
@@ -22,5 +22,5 @@ export class BookEntity {
   updatedOn?: Date;
 
   @ManyToOne((type) => AuthorEntity, (author) => author.books)
-  author?: AuthorEntity;
+  author: AuthorEntity;
 }
