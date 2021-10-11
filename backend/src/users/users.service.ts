@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { LoginUserDto, UserCreateDTO, UserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
 import { toUserDto } from './mappers/user.mapper';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -28,7 +29,7 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }
 
-    const areEqual = user.password === password;
+    const areEqual = await bcrypt.compare(password, user.password);
 
     if (!areEqual) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -49,6 +50,7 @@ export class UsersService {
   }
 
   async create(createUserDto: UserCreateDTO): Promise<UserDto> {
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const user = await this.usersRepository.save(createUserDto);
     return toUserDto(user);
   }
