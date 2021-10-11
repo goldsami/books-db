@@ -34,7 +34,7 @@ export class BooksService {
       ...createBookDto,
       author,
     });
-    // await this.booksRepository.save(book);
+
     return toBookDto(book);
   }
 
