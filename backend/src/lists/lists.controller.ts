@@ -1,0 +1,48 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  Put,
+} from '@nestjs/common';
+import { ListCreateDTO, ListDto } from './dto/list.dto';
+import { ListsService } from './lists.service';
+
+@Controller('lists')
+export class ListsController {
+  constructor(private readonly listsService: ListsService) {}
+
+  @Get()
+  async findAll(): Promise<ListDto[]> {
+    return this.listsService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<ListDto> {
+    return this.listsService.findOne(id);
+  }
+
+  @Post()
+  @UsePipes(new ValidationPipe())
+  async create(@Body() data: ListCreateDTO): Promise<ListDto> {
+    return this.listsService.create(data);
+  }
+
+  @Put(':id')
+  @UsePipes(new ValidationPipe())
+  async update(
+    @Param('id') id: string,
+    @Body() data: ListCreateDTO,
+  ): Promise<any> {
+    return this.listsService.update(id, data);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string): Promise<any> {
+    return this.listsService.remove(id);
+  }
+}

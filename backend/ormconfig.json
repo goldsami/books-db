@@ -5,6 +5,11 @@
   "username": "root",
   "password": "admin",
   "database": "books-db",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
-  "synchronize": false
+  "entities": ["dist/**/*.entity.js"],
+  "synchronize": false,
+  "autoLoadEntities": true,
+  "migrations": ["migrations/*{.ts,.js}"],
+  "cli": {
+    "migrationsDir": "migrations"
+  }
 }

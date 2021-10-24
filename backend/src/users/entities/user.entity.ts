@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { ListEntity } from 'src/lists/entities/list.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -39,4 +41,7 @@ export class UserEntity {
 
   @CreateDateColumn()
   updatedOn?: Date;
+
+  @OneToMany((type) => ListEntity, (list) => list.owner)
+  lists: ListEntity[];
 }
