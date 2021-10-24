@@ -6,6 +6,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { BookCycleEntity } from 'src/book-cycles/entities/book-cycle.entity';
+import { BookCycleDto } from 'src/book-cycles/dto/book-cycle.dto';
 
 @Entity('book')
 export class BookEntity {
@@ -23,4 +25,7 @@ export class BookEntity {
 
   @ManyToOne((type) => AuthorEntity, (author) => author.books)
   author: AuthorEntity;
+
+  @ManyToOne((type) => BookCycleEntity, (cycle) => cycle.books)
+  cycle: BookCycleEntity;
 }

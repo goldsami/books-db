@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthorsService } from '../authors/authors.service';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { BookCreateDTO, BookDto } from './dto/book.dto';
 import { BookEntity } from './entities/book.entity';
 import { toBookDto } from './mappers/book.mapper';
+import { BookCyclesService } from '../book-cycles/book-cycles.service';
 
 @Injectable()
 export class BooksService {
@@ -12,10 +13,13 @@ export class BooksService {
     @InjectRepository(BookEntity)
     private booksRepository: Repository<BookEntity>,
     private authorsService: AuthorsService,
+    private cycleService: BookCyclesService,
   ) {}
 
   async findOne(id: string): Promise<BookDto> {
-    const book = await this.booksRepository.findOne(id);
+    const book = await this.booksRepository.findOne(id, {
+      relations: ['author'],
+    });
     if (!book) {
       throw new HttpException("Book doesn't exist", HttpStatus.BAD_REQUEST);
     }
@@ -29,11 +33,20 @@ export class BooksService {
   }
 
   async create(createBookDto: BookCreateDTO): Promise<BookDto> {
-    const author = await this.authorsService.findOne(createBookDto.authorId);
-    const book = await this.booksRepository.save({
+    const saveData: DeepPartial<BookEntity> = {
       ...createBookDto,
-      author,
-    });
+    };
+    const author = await this.authorsService.findOne(createBookDto.authorId);
+    saveData.author = {
+      id: author.id,
+    };
+    if (createBookDto.cycleId) {
+      const cycle = await this.cycleService.findOne(createBookDto.cycleId);
+      saveData.cycle = {
+        id: cycle.id,
+      };
+    }
+    const book = await this.booksRepository.save(saveData);
 
     return toBookDto(book);
   }

@@ -7,6 +7,8 @@ import { BookEntity } from './books/entities/book.entity';
 import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { BookCyclesModule } from './book-cycles/book-cycles.module';
+import { ListsModule } from './lists/lists.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { AuthModule } from './auth/auth.module';
     AuthorsModule,
     TypeOrmModule.forRoot(),
     AuthModule,
+    BookCyclesModule,
+    ListsModule,
   ],
   controllers: [],
   providers: [],
