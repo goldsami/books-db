@@ -18,7 +18,7 @@ export class BooksService {
 
   async findOne(id: string): Promise<BookDto> {
     const book = await this.booksRepository.findOne(id, {
-      relations: ['author'],
+      relations: ['author', 'marks'],
     });
     if (!book) {
       throw new HttpException("Book doesn't exist", HttpStatus.BAD_REQUEST);
@@ -28,7 +28,7 @@ export class BooksService {
   }
 
   async findAll(): Promise<BookDto[]> {
-    const books = await this.booksRepository.find({ relations: ['author'] });
+    const books = await this.booksRepository.find({ relations: ['author', 'marks'] });
     return books.map(toBookDto);
   }
 

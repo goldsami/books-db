@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { BookCyclesModule } from './book-cycles/book-cycles.module';
 import { ListsModule } from './lists/lists.module';
+import { MarksModule } from './marks/marks.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ListsModule } from './lists/lists.module';
     AuthModule,
     BookCyclesModule,
     ListsModule,
+    MarksModule,
   ],
   controllers: [],
   providers: [],

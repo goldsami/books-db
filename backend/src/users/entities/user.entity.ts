@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ListEntity } from 'src/lists/entities/list.entity';
+import { MarkEntity } from 'src/marks/entities/mark.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -44,4 +45,7 @@ export class UserEntity {
 
   @OneToMany((type) => ListEntity, (list) => list.owner)
   lists: ListEntity[];
+
+  @OneToMany((type) => MarkEntity, (mark) => mark.user)
+  marks: MarkEntity[];
 }

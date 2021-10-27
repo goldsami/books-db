@@ -57,8 +57,12 @@ export class ListsService {
     return toListDto(list);
   }
 
-  async update(id: string, updateListDto: ListCreateDTO) {
-    return this.listsRepository.update(id, updateListDto);
+  async update(id: string, updateListDto: DeepPartial<ListCreateDTO>) {
+    return this.listsRepository.update(id, {
+      owner: {
+        id: updateListDto.ownerId
+      }
+    });
   }
 
   async remove(id: string) {

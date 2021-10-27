@@ -8,7 +8,9 @@ import {
   UsePipes,
   ValidationPipe,
   Put,
+  Query,
 } from '@nestjs/common';
+import { DeepPartial } from 'typeorm';
 import { ListCreateDTO, ListDto } from './dto/list.dto';
 import { ListsService } from './lists.service';
 
@@ -17,7 +19,8 @@ export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
   @Get()
-  async findAll(): Promise<ListDto[]> {
+  async findAll(@Query('userId') userId: Number): Promise<ListDto[]> {
+    console.log('userid', userId)
     return this.listsService.findAll();
   }
 
@@ -36,7 +39,7 @@ export class ListsController {
   @UsePipes(new ValidationPipe())
   async update(
     @Param('id') id: string,
-    @Body() data: ListCreateDTO,
+    @Body() data: DeepPartial<ListCreateDTO>,
   ): Promise<any> {
     return this.listsService.update(id, data);
   }
