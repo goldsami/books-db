@@ -19,8 +19,8 @@ export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
   @Get()
-  async findAll(@Query('userId') userId: Number): Promise<ListDto[]> {
-    console.log('userid', userId)
+  async findAll(@Query('userId') userId: number): Promise<ListDto[]> {
+    console.log('userid', userId);
     return this.listsService.findAll();
   }
 

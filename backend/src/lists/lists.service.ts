@@ -44,12 +44,11 @@ export class ListsService {
     };
 
     if (createListDto.bookIds?.length) {
-      const books = await Promise.all(
+      saveData.books = await Promise.all(
         createListDto.bookIds.map((bookId) =>
           this.booksService.findOne(bookId),
         ),
       );
-      saveData.books = books;
     }
 
     const list = await this.listsRepository.save(saveData);
@@ -60,8 +59,8 @@ export class ListsService {
   async update(id: string, updateListDto: DeepPartial<ListCreateDTO>) {
     return this.listsRepository.update(id, {
       owner: {
-        id: updateListDto.ownerId
-      }
+        id: updateListDto.ownerId,
+      },
     });
   }
 
