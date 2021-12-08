@@ -18,9 +18,6 @@ export class ListEntity {
   @Column({ type: 'varchar', nullable: false })
   name: string;
 
-  @Column({ type: 'date', nullable: true })
-  dateOfBirth?: Date;
-
   @CreateDateColumn()
   createdOn?: Date;
 

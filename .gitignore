@@ -19,6 +19,7 @@ lerna-debug.log*
 
 # IDEs and editors
 /.idea
+backend/.idea
 .project
 .classpath
 .c9/
@@ -38,3 +39,4 @@ backend/.env
 frontend/node_modules/
 frontend/dist/
 frontend/.env
+/backend/.idea/codeStyles/codeStyleConfig.xml
