@@ -1,4 +1,4 @@
-import { useGetItems } from '../hooks/books';
+import { useGetItems } from './hooks';
 
 export interface BooksListProps {
   books: string[];
@@ -9,11 +9,11 @@ export function BooksList(props: BooksListProps) {
   console.log('res', res);
 
   return (
-    <div>
-      <div>hello</div>
+    <>
+      <div>hello {props.books.join()}</div>
       {res.data?.map((b: any) => (
         <div>{b.name}</div>
       ))}
-    </div>
+    </>
   );
 }
