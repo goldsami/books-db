@@ -1,7 +1,7 @@
 import { useGetItems } from './hooks';
 
 export interface BooksListProps {
-  books: string[];
+  books?: string[];
 }
 
 export function BooksList(props: BooksListProps) {
@@ -10,7 +10,7 @@ export function BooksList(props: BooksListProps) {
 
   return (
     <>
-      <div>hello {props.books.join()}</div>
+      <div>hello {props.books?.join()}</div>
       {res.data?.map((b: any) => (
         <div>{b.name}</div>
       ))}
