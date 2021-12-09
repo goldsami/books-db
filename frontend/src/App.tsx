@@ -1,17 +1,17 @@
 import './App.scss';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import {PageHeader} from "./components/Header";
-import {BrowserRouter, Route, Routes } from 'react-router-dom';
-import {BooksList} from "./domain/books/BooksList";
-import {MainPage} from "./domain/main/MainPage";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import BooksList from './domain/books/BooksList';
+import PageHeader from './components/Header';
+import MainPage from './domain/main/MainPage';
 
 const queryClient = new QueryClient();
 
-function App() {
+const App = function () {
   return (
     <QueryClientProvider client={queryClient}>
-        <PageHeader />
-      {/*<BooksList books={['b1', 'b2']} />*/}
+      <PageHeader />
+      {/* <BooksList books={['b1', 'b2']} /> */}
       <BrowserRouter>
         <Routes>
           <Route path="/books" element={<BooksList />} />
@@ -20,6 +20,6 @@ function App() {
       </BrowserRouter>
     </QueryClientProvider>
   );
-}
+};
 
 export default App;

@@ -1,5 +1,8 @@
-export function MainPage() {
+const MainPage = function () {
+  // code
   return (
     <>main page</>
-  )
-}
+  );
+};
+
+export default MainPage;
